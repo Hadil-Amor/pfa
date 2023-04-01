@@ -15,7 +15,6 @@ contract ConsultationEnLigne {
     }
 
     struct Laboratoire {
-        string name;
         uint id;
         address laboratoire;
         string nom;
