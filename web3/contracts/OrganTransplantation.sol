@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 contract OrganTransplantation{
-        address public DonorSurgeon;
-        address public TransplantSurgeon; 
-        mapping(address => bool)  transporter; 
-        enum OrganStatus {NotReady, ReadyforDelivery, StartDelivery, onTrack, EndDelivery, OrganReceived}
+        
         OrganStatus public Organstate;
         uint startTime;
         uint Donor_ID;
