@@ -1,0 +1,136 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Tajwal', sans-serif;
+  background-color: #fff !important;
+}
+div .container{
+  margin-left: 100px;
+  
+  
+  
+}
+html{
+  scroll-behavior: smooth;
+}
+:root{
+  --main-color : #4e99fc;
+  --main2-color:#565acf; 
+  --second-color : #ee50a9;
+  --third-color : #8BE8FE;
+}
+
+section, footer, header{
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  max-width: 100%;
+  padding: 25px 0px;
+  margin-top: 50px;
+}
+a{
+  text-decoration: none !important;
+}
+span{
+  display: block;
+}
+ul{
+  margin: 0;
+  padding: 0;
+}
+li{
+  list-style: none;
+}
+button{
+  text-align: center;
+  box-sizing: border-box;
+  height: 40px;
+  border-radius: 4px;
+}
+p{
+  line-height: 20px;
+}
+input{
+  box-sizing: border-box;
+  border: 1px solid #fff;
+  text-align: left;
+  padding: 5px 15px;
+  color: #333;
+  font-size: 16px;
+  font-family: 'Tajwal';
+}
+
+/*footer css*/
+footer img.footerlog{
+  width: auto;
+  height: 40px;
+  margin: 15px 0px;
+}
+footer p{
+  font-size: 17px;
+}
+footer .footer-contact{
+  display: flex;
+}
+footer .footer-contact .footer-icon{
+  margin-right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: var(--second-color);
+  line-height: 40px;
+  border: 1px solid var(--second-color);
+  box-sizing: border-box;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  
+}
+footer .footer-contact .footer-icon svg{
+  color: #fff;
+  text-align : center;
+  padding-left: 10px;
+}
+footer .footer-contact h6{
+  color: var(--second-color);
+  font-size: 10px;
+  margin-top: 10px;
+}
+footer  h2{
+  color: var(--main-color);
+  font-size: 30px;
+  margin: 15px 0px;
+}
+footer ul{
+  margin-top: 20px;
+}
+footer ul li{
+  margin-top: 10px;
+}
+footer ul li a{
+  color: #333;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+footer form{
+  margin: 15 px 0px;
+}
+footer form input{
+  border: 1px solid #ccc;
+  margin: 10px 0px;
+  width: 100%;
+}
+footer form button{
+  width: 100%;
+  background-color: var(--second-color)!important;
+  border: 1px solid var(--second-color) !important;
+  color: #fff;
+}
+footer .footer-buttom{
+  text-align: center;
+  margin-top: 25px;
+  padding: 15px 0px;
+  border-top: 1px solid #ccc;
+}
+footer .footer-buttom span{
+  display: block;
+  margin-top: 10px;
+}
