@@ -58,7 +58,7 @@ contract Diagnostic {
     }
     
     mapping(address => Patient) public patient_information;
-    mapping(address => Prescription[]) public pharmacie_prescriptions;
+    /*mapping(address => Prescription[]) public pharmacie_prescriptions;*/
     mapping(address => Analyse[]) public patient_analyses;
     mapping(address => AppointmentRequest[]) public appointmentRequests;
     mapping(address => Record[]) public patient_records;
@@ -188,22 +188,20 @@ contract Diagnostic {
         patient_records[p][id_record].test_id = test_id_new;
     }
    
-    function SendAnalyse_to_the_patient(address p, uint id_analyse, string memory result, uint price) public onlylaboratory{
+    function Add_Analyse_result(address p, uint id_analyse, string memory result, uint price) public onlylaboratory{
        Analyse[] memory analyses_recived =  laboratory_analyses[msg.sender];
        for(uint i = 0; i<analyses_recived.length; i++){
-           if(analyses_recived[i].patient==p && analyses_recived[i].id ==id_analyse && analyses_recived[i].paid )
+           if(analyses_recived[i].patient==p && analyses_recived[i].id ==id_analyse )
            {
                analyses_recived[i].resultat=result;
                analyses_recived[i].price=price;
                laboratory_analyses[msg.sender][i]=analyses_recived[i];
-               patient_analyses[p].push(analyses_recived[i]);
                break;
            }
        }
-
     }
-
-    function View_analyse_doctor (address p, uint id) public view onlydoctor returns(Analyse memory) {
+    
+   /* function View_analyse_doctor (address p, uint id) public view onlydoctor returns(Analyse memory) {
         Analyse memory a;
         Analyse[] memory analyses_done = patient_analyses[p];
         for(uint i = 0; i<analyses_done.length; i++){
@@ -224,7 +222,7 @@ contract Diagnostic {
            }
         }
         return a;
-    }
+    }*/
 
     function pay_analyse (uint id,address payable lab ) public onlypatient payable{
         require(laboratories[lab],"invalid laboratory"); 
@@ -245,6 +243,15 @@ contract Diagnostic {
          a.paid=true;
          laboratory_analyses[lab][index]=a;
     }
+    function send_analyse_to_patinet (uint id_analyse, address patient) public onlylaboratory{
+        Analyse[] memory analyses_recived =  laboratory_analyses[msg.sender];
+        for(uint i = 0; i<analyses_recived.length; i++){
+           if(analyses_recived[i].patient==patient && analyses_recived[i].id ==id_analyse && analyses_recived[i].paid)
+           {   patient_analyses[patient].push(analyses_recived[i]);
+               break;
+           }
+       }
+    }
 
     //Pharmacie Patient Doctor
     function add_medecine(uint id_rec ,address patient, string memory name, string memory dosage, uint duration, string memory inst  )public onlydoctor{
@@ -253,13 +260,13 @@ contract Diagnostic {
     }
     function approve_pharmacy(address pharmacie,uint id_rec) public onlypatient{
         patient_records[msg.sender][id_rec].prescription.pharmacie=pharmacie;
-        pharmacie_prescriptions[pharmacie].push(patient_records[msg.sender][id_rec].prescription);
+        
     }
-    function read_medecine(address patient,uint id_rec)public view onlypharmacy returns(Medecine[] memory){
+    /*function read_medecine(address patient,uint id_rec)public view onlypharmacy returns(Medecine[] memory){
         return patient_medecines[patient][id_rec];
-    }
+    }*/
     function add_prescription_price(uint id,address patient,uint price) public onlypharmacy {
-        require(patient_records[msg.sender][id].prescription.pharmacie==msg.sender,"You're not allowed to see prescription");
+        require(patient_records[patient][id].prescription.pharmacie==msg.sender,"You're not allowed to see prescription");
               patient_records[patient][id].prescription.price=price;
         }
     
@@ -267,21 +274,20 @@ contract Diagnostic {
         require(patient_records[msg.sender][id].prescription.pharmacie==phar,"invalid pharmacy"); 
         require(!patient_records[msg.sender][id].prescription.isPaid,"Prescription already paid");
         require(address(this).balance >= patient_records[msg.sender][id].prescription.price);
-        require(msg.value == patient_records[msg.sender][id].prescription.price);
+        require(msg.value >= patient_records[msg.sender][id].prescription.price);
         phar.transfer(patient_records[msg.sender][id].prescription.price);
         patient_records[msg.sender][id].prescription.isPaid=true;
     }
     function setDeliveryAddress(uint id_rec, address deliveryAddress) public onlypatient {
-    Prescription[] storage prescriptions = pharmacie_prescriptions[msg.sender];
-    require(id_rec < prescriptions.length, "Invalid prescription ID");
-
-    prescriptions[id_rec].deliveryAddress = deliveryAddress;
+    require(id_rec < patient_records[msg.sender].length, "Invalid prescription ID");
+    patient_records[msg.sender][id_rec].prescription.deliveryAddress= deliveryAddress;
     }
-    function deliverMedicines(uint id_rec) public onlypharmacy {
-    Prescription[] storage prescriptions = pharmacie_prescriptions[msg.sender];
-    require(id_rec < prescriptions.length, "Invalid prescription ID");
-    Prescription storage prescription = prescriptions[id_rec];
-    require(prescription.pharmacie == msg.sender, "Invalid pharmacy");
-    prescription.isDelivered = true;
+    function deliverMedicines(uint id_rec,address patient) public onlypharmacy {
+    
+    require(id_rec < patient_records[patient].length, "Invalid prescription ID");
+    
+    require(patient_records[patient][id_rec].prescription.pharmacie == msg.sender, "Invalid pharmacy");
+    
+    patient_records[msg.sender][id_rec].prescription.isDelivered =true;
 }
 }
